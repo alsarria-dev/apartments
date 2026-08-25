@@ -3,6 +3,7 @@ import Details from "../components/Details";
 import EmptyState from "../components/EmptyState";
 import Page from "../components/Page";
 import { ButtonLink } from "../components/Button";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 import useScrollToTop from "../hooks/useScrollToTop";
 import styles from "./ApartmentDetails.module.css";
 
@@ -22,6 +23,8 @@ const ApartmentDetails = ({
   const apartmentDetail = allApartments.find(
     (element) => element.id === apartmentId,
   );
+
+  useDocumentTitle(apartmentDetail?.name ?? (loading ? "Loading" : "Not found"));
 
   // "Not loaded yet" and "no such listing" look identical from here, so they
   // have to be told apart explicitly — otherwise opening a link directly

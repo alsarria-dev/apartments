@@ -69,8 +69,12 @@ function App() {
 
   return (
     <div className={styles.shell}>
+      {/* Five nav links and a theme toggle precede the content on every page. */}
+      <a href="#main" className={styles.skipLink}>
+        Skip to content
+      </a>
       <Navbar />
-      <main className={styles.main}>
+      <main id="main" className={styles.main}>
         <Routes>
           <Route
             path="/"

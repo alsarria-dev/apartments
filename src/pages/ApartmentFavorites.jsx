@@ -2,6 +2,7 @@ import EmptyState from "../components/EmptyState";
 import ListingGrid from "../components/ListingGrid";
 import Page from "../components/Page";
 import { ButtonLink } from "../components/Button";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 import useScrollToTop from "../hooks/useScrollToTop";
 import styles from "./ApartmentFavorites.module.css";
 
@@ -12,6 +13,7 @@ const ApartmentFavorites = ({
   loading,
 }) => {
   useScrollToTop();
+  useDocumentTitle("Saved");
 
   return (
     <Page>

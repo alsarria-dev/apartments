@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { SearchIcon } from "../components/icons";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 import useScrollToTop from "../hooks/useScrollToTop";
 import heroWide from "../assets/images/hero-1536.jpg";
 import heroNarrow from "../assets/images/hero-768.jpg";
@@ -8,6 +9,7 @@ import styles from "./HomePage.module.css";
 function HomePage({ allApartments, onSearch }) {
   const [value, setValue] = useState("");
   useScrollToTop();
+  useDocumentTitle();
 
   // The three cities are the whole catalogue, so offering them directly is
   // faster than asking someone to guess what's in it.

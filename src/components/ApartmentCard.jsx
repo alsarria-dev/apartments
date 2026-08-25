@@ -41,9 +41,11 @@ const ApartmentCard = ({ apartment, favorited, onToggleFavorite }) => {
 
         <div className={styles.body}>
           <div className={styles.heading}>
-            <h3 className={styles.title}>
+            {/* h2, not h3: these sit directly under the page h1, and skipping
+                a level breaks heading navigation. */}
+            <h2 className={styles.title}>
               {apartment.property_type} in {listingArea(apartment)}
-            </h3>
+            </h2>
             {rating !== null && (
               <p className={styles.rating}>
                 <StarIcon />

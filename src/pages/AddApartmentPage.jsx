@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "../components/Page";
 import { Button } from "../components/Button";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 import useScrollToTop from "../hooks/useScrollToTop";
 import styles from "./AddApartmentPage.module.css";
 
@@ -67,6 +68,7 @@ const AddApartmentPage = ({ addListing }) => {
   const [dataForm, setDataForm] = useState(initialState);
   const navigate = useNavigate();
   useScrollToTop();
+  useDocumentTitle("List your place");
 
   const handleInput = (e) => {
     const { name, value } = e.target;

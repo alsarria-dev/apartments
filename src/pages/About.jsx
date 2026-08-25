@@ -1,8 +1,11 @@
 import Page from "../components/Page";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 import profPic from "../assets/images/pixel_profile_pic.png";
 import styles from "./About.module.css";
 
 function About() {
+  useDocumentTitle("About");
+
   return (
     <Page>
       <div className={styles.about}>

@@ -4,6 +4,7 @@ import EmptyState from "../components/EmptyState";
 import Page from "../components/Page";
 import SearchBar from "../components/SearchBar";
 import { Button } from "../components/Button";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 import useScrollToTop from "../hooks/useScrollToTop";
 import styles from "./ApartmentListing.module.css";
 
@@ -18,6 +19,7 @@ const ApartmentListing = ({
   error,
 }) => {
   useScrollToTop();
+  useDocumentTitle("Stays");
 
   return (
     <Page>
