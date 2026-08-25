@@ -10,22 +10,17 @@
    listing photography carries the colour.
    ========================================================================== */
 
-/* Declared once, here. These faces used to be redeclared in seven stylesheets,
-   none of them with font-display, so text stayed invisible while ~1MB of TTF
-   loaded. Phase 3 subsets these to WOFF2. */
+/* One webfont, declared once. These faces used to be redeclared across seven
+   stylesheets, none with font-display, so text stayed invisible while ~1 MB of
+   TTF loaded.
+
+   Only the display face is downloaded now. UI text uses the system stack,
+   which costs nothing, renders on first paint with no swap, and is already
+   hinted for the reader's platform. */
 @font-face {
   font-family: "EB Garamond";
   src: url("../assets/EBGaramond-SemiBold.ttf") format("truetype");
   font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Montserrat";
-  src: url("../assets/Montserrat-VariableFont_wght.ttf")
-    format("truetype-variations");
-  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -55,7 +50,9 @@
      Old-style figures in a price read as considered in a way a grotesk price
      does not, and the font is already in the bundle. */
   --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
-  --font-ui: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-ui:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    sans-serif;
 
   /* 1.25 modular scale, replacing the ten ad-hoc font sizes. */
   --text-xs: 0.8rem;
