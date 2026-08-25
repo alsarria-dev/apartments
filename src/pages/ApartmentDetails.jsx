@@ -4,8 +4,14 @@ import EmptyState from "../components/EmptyState";
 import Page from "../components/Page";
 import { ButtonLink } from "../components/Button";
 import useScrollToTop from "../hooks/useScrollToTop";
+import styles from "./ApartmentDetails.module.css";
 
-const ApartmentDetails = ({ allApartments, isFavorite, toggleFavorite }) => {
+const ApartmentDetails = ({
+  allApartments,
+  isFavorite,
+  toggleFavorite,
+  loading,
+}) => {
   const { apartmentId } = useParams();
   useScrollToTop();
 
@@ -16,6 +22,19 @@ const ApartmentDetails = ({ allApartments, isFavorite, toggleFavorite }) => {
   const apartmentDetail = allApartments.find(
     (element) => element.id === apartmentId,
   );
+
+  // "Not loaded yet" and "no such listing" look identical from here, so they
+  // have to be told apart explicitly — otherwise opening a link directly
+  // flashes "that stay isn't available" before the catalogue arrives.
+  if (loading) {
+    return (
+      <Page>
+        <p className={styles.loading} aria-busy="true">
+          Loading stay…
+        </p>
+      </Page>
+    );
+  }
 
   if (!apartmentDetail) {
     return (

@@ -6,6 +6,10 @@
   min-height: 100vh;
 }
 
+/* A flex column so a full-bleed route (the hero) can claim the leftover
+   height instead of leaving a band of page background above the footer. */
 .main {
+  display: flex;
+  flex-direction: column;
   flex: 1;
 }

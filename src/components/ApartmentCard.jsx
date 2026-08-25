@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import { HeartIcon, StarIcon } from "./icons";
-import { listingArea, listingRating } from "../lib/listings";
+import {
+  imageSource,
+  imageSrcSet,
+  listingArea,
+  listingRating,
+} from "../lib/listings";
 import styles from "./ApartmentCard.module.css";
 
-const ApartmentCard = ({ apartment, isFavorite, toggleFavorite }) => {
+// Cards render 100 at a time and only change when their own listing or its
+// saved state changes, so they're worth memoizing — which is only possible
+// now that the whole results array isn't being handed to every one of them.
+const CARD_WIDTHS = [280, 420, 560];
+
+// `favorited` arrives as a boolean rather than as a predicate the card calls:
+// the predicate changes identity on every toggle, which would re-render all
+// 100 cards. A boolean changes for exactly the one card that was toggled.
+const ApartmentCard = ({ apartment, favorited, onToggleFavorite }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  // Read straight from the shared favorites list. The card used to keep its own
-  // boolean, which went stale whenever the list changed somewhere else.
-  const favorited = isFavorite(apartment.id);
   const rating = listingRating(apartment);
 
   return (
@@ -17,7 +27,9 @@ const ApartmentCard = ({ apartment, isFavorite, toggleFavorite }) => {
         <div className={styles.media}>
           <img
             className={`${styles.image} ${imageLoaded ? styles.imageReady : ""}`}
-            src={apartment.picture_url.url}
+            src={imageSource(apartment.picture_url.url, 280)}
+            srcSet={imageSrcSet(apartment.picture_url.url, CARD_WIDTHS)}
+            sizes="(max-width: 480px) 100vw, (max-width: 900px) 45vw, 280px"
             alt={apartment.name}
             width={280}
             height={280}
@@ -55,7 +67,7 @@ const ApartmentCard = ({ apartment, isFavorite, toggleFavorite }) => {
       <button
         type="button"
         className={styles.favorite}
-        onClick={() => toggleFavorite(apartment.id)}
+        onClick={() => onToggleFavorite(apartment.id)}
         aria-pressed={favorited}
         aria-label={
           favorited
@@ -69,4 +81,4 @@ const ApartmentCard = ({ apartment, isFavorite, toggleFavorite }) => {
   );
 };
 
-export default ApartmentCard;
+export default memo(ApartmentCard);

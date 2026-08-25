@@ -14,6 +14,44 @@
   padding-block: var(--space-8);
 }
 
+/* Matches the real card's geometry exactly, so nothing moves when the
+   listings arrive. */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.skeletonMedia {
+  aspect-ratio: 1;
+  background-color: var(--paper-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+}
+
+.skeletonLine {
+  height: 0.75rem;
+  background-color: var(--paper-sunk);
+  border-radius: var(--radius-s);
+}
+
+.skeletonShort {
+  width: 45%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeletonMedia,
+  .skeletonLine {
+    animation: pulse 1.6s var(--ease) infinite;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: 1fr;

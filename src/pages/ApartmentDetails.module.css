@@ -1,0 +1,8 @@
+.loading {
+  padding-block: var(--space-8);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+}

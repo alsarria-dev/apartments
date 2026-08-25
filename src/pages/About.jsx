@@ -13,6 +13,7 @@ function About() {
             alt=""
             width={280}
             height={280}
+            loading="lazy"
             decoding="async"
           />
           <p className={styles.handle}>alsarria-dev</p>

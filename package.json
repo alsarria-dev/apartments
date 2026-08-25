@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
+    "data:build": "node scripts/build-catalogue.mjs",
+    "prebuild": "node scripts/build-catalogue.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

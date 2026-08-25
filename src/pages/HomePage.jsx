@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { SearchIcon } from "../components/icons";
 import useScrollToTop from "../hooks/useScrollToTop";
-import heroImage from "../assets/images/landscape.png";
+import heroWide from "../assets/images/hero-1536.jpg";
+import heroNarrow from "../assets/images/hero-768.jpg";
 import styles from "./HomePage.module.css";
 
 function HomePage({ allApartments, onSearch }) {
@@ -28,7 +29,19 @@ function HomePage({ allApartments, onSearch }) {
 
   return (
     <section className={styles.hero}>
-      <img className={styles.heroImage} src={heroImage} alt="" />
+      {/* The largest paint on the landing page, so it is fetched eagerly at
+          high priority and never lazily. */}
+      <img
+        className={styles.heroImage}
+        src={heroWide}
+        srcSet={`${heroNarrow} 768w, ${heroWide} 1536w`}
+        sizes="100vw"
+        alt=""
+        width={1536}
+        height={1024}
+        fetchPriority="high"
+        decoding="async"
+      />
       <div className={styles.scrim} />
 
       <div className={styles.content}>

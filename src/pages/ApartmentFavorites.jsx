@@ -5,14 +5,19 @@ import { ButtonLink } from "../components/Button";
 import useScrollToTop from "../hooks/useScrollToTop";
 import styles from "./ApartmentFavorites.module.css";
 
-const ApartmentFavorites = ({ favorites, isFavorite, toggleFavorite }) => {
+const ApartmentFavorites = ({
+  favorites,
+  isFavorite,
+  toggleFavorite,
+  loading,
+}) => {
   useScrollToTop();
 
   return (
     <Page>
       <header className={styles.header}>
         <h1 className={styles.title}>Saved</h1>
-        {favorites.length > 0 && (
+        {!loading && favorites.length > 0 && (
           <p className={styles.count}>
             <span className={styles.number}>{favorites.length}</span>{" "}
             {favorites.length === 1 ? "stay" : "stays"}
@@ -24,6 +29,7 @@ const ApartmentFavorites = ({ favorites, isFavorite, toggleFavorite }) => {
         listings={favorites}
         isFavorite={isFavorite}
         toggleFavorite={toggleFavorite}
+        loading={loading}
         emptyState={
           <EmptyState
             title="Nothing saved yet"

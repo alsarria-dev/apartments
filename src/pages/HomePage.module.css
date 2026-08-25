@@ -2,6 +2,7 @@
   position: relative;
   display: grid;
   place-items: center;
+  flex: 1;
   min-height: min(70vh, 40rem);
   overflow: hidden;
   isolation: isolate;
@@ -16,17 +17,19 @@
   object-fit: cover;
 }
 
-/* Fixed scrim rather than trusting the photo to stay dark enough for white
-   text — this one is bright along the horizon. */
+/* Fixed scrim rather than trusting the artwork to stay dark enough for white
+   text — it is bright along the horizon. Weighted to the top and bottom, where
+   the header and the city chips sit, and kept light through the middle so the
+   skyline still reads. */
 .scrim {
   position: absolute;
   inset: 0;
   z-index: -1;
   background: linear-gradient(
     to bottom,
-    rgb(20 14 8 / 55%),
-    rgb(20 14 8 / 30%) 45%,
-    rgb(20 14 8 / 65%)
+    rgb(20 14 8 / 45%),
+    rgb(20 14 8 / 25%) 45%,
+    rgb(20 14 8 / 58%)
   );
 }
 

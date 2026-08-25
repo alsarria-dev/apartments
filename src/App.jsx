@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
 // Importing Hooks and Helpers
+import useCatalogue from "./hooks/useCatalogue";
 import useDebouncedValue from "./hooks/useDebouncedValue";
 import useFavorites from "./hooks/useFavorites";
 import useLocalStorage from "./hooks/useLocalStorage";
@@ -23,11 +24,11 @@ import { filterListings } from "./lib/listings";
 // Importing Styles
 import styles from "./App.module.css";
 
-// Importing Data
-import apartment_data from "./data/project_data.json";
-
 // Main App function
 function App() {
+  // The catalogue arrives in its own chunk, after first paint.
+  const { listings, loading, error } = useCatalogue();
+
   // Only host-created listings are persisted. The bundled catalogue already
   // ships with the app, so storing a second copy of it would just burn quota.
   const [hostListings, setHostListings] = useLocalStorage(
@@ -38,8 +39,8 @@ function App() {
   const navigate = useNavigate();
 
   const allApartments = useMemo(
-    () => [...hostListings, ...apartment_data.results],
-    [hostListings],
+    () => [...hostListings, ...listings],
+    [hostListings, listings],
   );
 
   // Search results are derived from the query rather than held in their own
@@ -90,6 +91,8 @@ function App() {
                 setQuery={setQuery}
                 isFavorite={isFavorite}
                 toggleFavorite={toggleFavorite}
+                loading={loading}
+                error={error}
               />
             }
           ></Route>
@@ -100,6 +103,7 @@ function App() {
                 favorites={favorites}
                 isFavorite={isFavorite}
                 toggleFavorite={toggleFavorite}
+                loading={loading}
               />
             }
           ></Route>
@@ -110,6 +114,7 @@ function App() {
                 allApartments={allApartments}
                 isFavorite={isFavorite}
                 toggleFavorite={toggleFavorite}
+                loading={loading}
               />
             }
           ></Route>

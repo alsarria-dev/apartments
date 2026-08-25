@@ -34,3 +34,24 @@ const hashId = (id) => {
 };
 
 export const checkInScore = (listing) => 80 + (hashId(listing.id) % 21);
+
+// The catalogue's photos are served by imgix and already carry sizing params
+// (`w`, `h`, `q`), so asking for other widths costs nothing but a rewritten
+// query string. Listings added by a host point at arbitrary URLs, so anything
+// that isn't an imgix URL is left exactly as it is.
+export const imageSource = (url, width) => {
+  try {
+    const parsed = new URL(url);
+    if (!parsed.hostname.endsWith("imgix.net")) return url;
+    parsed.searchParams.set("w", String(width));
+    parsed.searchParams.set("h", String(width));
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+};
+
+export const imageSrcSet = (url, widths) => {
+  const sources = widths.map((width) => `${imageSource(url, width)} ${width}w`);
+  return sources.join(", ");
+};
