@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddApartmentPage.css";
 
 const initialState = {
-  id: "",
   name: "",
   country: "",
   city: "",
@@ -19,33 +18,39 @@ const initialState = {
   picture_url: { url: "" },
 };
 
-const AddApartmentPage = ({
-  dataArray,
-  setDataArray,
-  setAllApartments,
-  allApartments,
-}) => {
+// Number inputs hand back strings; the bundled listings store these as numbers.
+const NUMERIC_FIELDS = [
+  "price",
+  "accommodates",
+  "bedrooms",
+  "bathrooms",
+  "review_scores_rating",
+];
+
+const AddApartmentPage = ({ addListing }) => {
   const [dataForm, setDataForm] = useState(initialState);
   const navigate = useNavigate();
 
-  useEffect(() => {}, [dataForm]);
-
   const handleInput = (e) => {
-    const random_id = String(Math.floor(Math.random() * 20000000000));
     const { name, value } = e.target;
-    if (name === "picture_url") {
-      setDataForm({ ...dataForm, [name]: { url: value }, id: random_id });
-    } else {
-      setDataForm({ ...dataForm, [name]: value, id: random_id });
-    }
+    setDataForm((current) =>
+      name === "picture_url"
+        ? { ...current, picture_url: { url: value } }
+        : { ...current, [name]: value },
+    );
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newArray = [dataForm, ...dataArray];
-    const newArray2 = [dataForm, ...allApartments];
-    setDataArray(newArray);
-    setAllApartments(newArray2);
+    // The id is minted once, here. It used to be regenerated on every
+    // keystroke, so a listing ended up with whatever the last keypress produced.
+    addListing({
+      ...dataForm,
+      ...Object.fromEntries(
+        NUMERIC_FIELDS.map((field) => [field, Number(dataForm[field])]),
+      ),
+      id: crypto.randomUUID(),
+    });
     setDataForm(initialState);
     navigate("/properties");
   };

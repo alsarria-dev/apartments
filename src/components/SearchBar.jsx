@@ -1,45 +1,23 @@
-import { useEffect } from "react";
 import searchBar from "../assets/images/search.png";
 import "./SearchBar.css";
 
-const SearchBar = ({
-  setDataArray,
-  inputData,
-  setInputData,
-  allApartments,
-}) => {
-  const updateArray = (e) => {
-    setInputData(e.target.value);
-  };
-  const triggerSetArray = () => {
-    setDataArray(
-      allApartments.filter(
-        (element) =>
-          element.city.toLowerCase().includes(inputData.toLowerCase()) ||
-          element.country.toLowerCase().includes(inputData.toLowerCase()),
-      ),
-    );
-  };
-
-  useEffect(() => {
-    triggerSetArray();
-  }, []);
-
-  return (
-    <div className="search-box">
-      <button className="btn-search">
-        <img className="search-image" src={searchBar} alt="" />
-      </button>
-      <input
-        onKeyUp={(e) => e.key === "Enter" && triggerSetArray()}
-        onChange={updateArray}
-        type="text"
-        className="input-search"
-        placeholder="Type to Search..."
-        value={inputData}
-      ></input>
-    </div>
-  );
-};
+// Purely controlled: the query lives in App, which derives the results from it.
+// Filtering used to be triggered only by Enter and by a mount effect, so what
+// you typed and what you saw could disagree.
+const SearchBar = ({ query, setQuery }) => (
+  <div className="search-box">
+    <button className="btn-search" type="button">
+      <img className="search-image" src={searchBar} alt="" />
+    </button>
+    <input
+      onChange={(e) => setQuery(e.target.value)}
+      type="text"
+      className="input-search"
+      placeholder="Type to Search..."
+      value={query}
+      aria-label="Search listings by city or country"
+    />
+  </div>
+);
 
 export default SearchBar;

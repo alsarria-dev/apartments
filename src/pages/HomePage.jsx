@@ -1,15 +1,9 @@
-import { useEffect } from "react";
 import search from "../assets/images/icons8-búsqueda-50.png";
+import useScrollToTop from "../hooks/useScrollToTop";
 import "./HomePage.css";
 
 function HomePage({ handleSubmit }) {
-  useEffect(() => {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
-  }, []);
+  useScrollToTop();
 
   return (
     <>

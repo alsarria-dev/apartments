@@ -1,18 +1,16 @@
-import { useEffect } from "react";
 import Favorites from "../components/Favorites";
+import useScrollToTop from "../hooks/useScrollToTop";
 
-const ApartmentFavorites = ({ favArray, setFavArray }) => {
-  useEffect(() => {
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
-  }, []);
+const ApartmentFavorites = ({ favorites, isFavorite, toggleFavorite }) => {
+  useScrollToTop();
 
   return (
     <div className="upper-container">
-      <Favorites favArray={favArray} setFavArray={setFavArray} />
+      <Favorites
+        favorites={favorites}
+        isFavorite={isFavorite}
+        toggleFavorite={toggleFavorite}
+      />
     </div>
   );
 };

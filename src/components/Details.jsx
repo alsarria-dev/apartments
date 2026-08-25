@@ -2,6 +2,7 @@ import { useState } from "react";
 import star from "../assets/images/estrella.png";
 import yellowStar from "../assets/images/estrella-de-navidad.png";
 import diamond from "../assets/images/gemas.png";
+import { checkInScore } from "../lib/listings";
 import "./Details.css";
 
 function Details({ apartmentDetail }) {
@@ -46,23 +47,24 @@ function Details({ apartmentDetail }) {
               </p>
             </div>
 
-            <p className="host">
-              Hosted by: {apartmentDetail.host_name} <br />
-              {apartmentDetail.host_name} is a Superhost <br />{" "}
+            <div className="host">
+              <p>
+                Hosted by: {apartmentDetail.host_name} <br />
+                {apartmentDetail.host_name} is a Superhost
+              </p>
               <p> Superhosts are experienced, highly rated Hosts. </p>
-            </p>
+            </div>
             <div className="rareFind">
               <img src={diamond} alt="" className="diamond" />
               <p>
                 {" "}
-                This is a rare find <br /> Pedro's place is usually fully
-                booked.
+                This is a rare find <br /> {apartmentDetail.host_name}&apos;s
+                place is usually fully booked.
               </p>
             </div>
             <p className="checkIn">
-              Great check-in experience{" "}
-              {Math.floor(Math.random() * (100 - 80 + 1)) + 80}% of recent
-              guests gave the check-in process a 5-star rating.
+              Great check-in experience {checkInScore(apartmentDetail)}% of
+              recent guests gave the check-in process a 5-star rating.
             </p>
           </div>
         </div>

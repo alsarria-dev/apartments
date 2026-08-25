@@ -17,7 +17,7 @@ function Footer() {
         <p className="footer-paragraph">© {date.getFullYear()}</p>
       </div>
         <div className="footerIconLogos-container">
-          <a href="https://www.instagram.com/" target="__blank">
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
             <img
               className="footer-logo instagram"
               src={instagramLogo}
@@ -25,7 +25,7 @@ function Footer() {
             />
           </a>
           <p className="logo-separator">/</p>
-          <a href="https://www.facebook.com/" target="__blank">
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
             <img
               className="footer-logo facebook"
               src={facebookLogo}
@@ -33,7 +33,7 @@ function Footer() {
             />
           </a>
           <p className="logo-separator">/</p>
-          <a href="https://www.linkedin.com/" target="__blank">
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
             <img
               className="footer-logo linkedin"
               src={linkedinLogo}
@@ -41,7 +41,7 @@ function Footer() {
             />
           </a>
           <p className="logo-separator">/</p>
-          <a href="https://www.youtube.com/" target="__blank">
+          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
             <img
               className="footer-logo youtube"
               src={youtubeLogo}
@@ -49,7 +49,7 @@ function Footer() {
             />
           </a>
           <p className="logo-separator">/</p>
-          <a href="https://twitter.com/" target="__blank">
+          <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
             <img className="footer-logo xlogo" src={xLogo} alt="x logo" />
           </a>
         </div>

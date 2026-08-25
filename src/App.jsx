@@ -1,5 +1,5 @@
 // Importing Modules
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 
@@ -14,6 +14,12 @@ import About from "./pages/About";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
+// Importing Hooks and Helpers
+import useDebouncedValue from "./hooks/useDebouncedValue";
+import useFavorites from "./hooks/useFavorites";
+import useLocalStorage from "./hooks/useLocalStorage";
+import { filterListings } from "./lib/listings";
+
 // Importing Styles
 import "./App.css";
 
@@ -22,14 +28,39 @@ import apartment_data from "./data/project_data.json";
 
 // Main App function
 function App() {
-  const [dataArray, setDataArray] = useState(apartment_data.results);
-  const [allApartments, setAllApartments] = useState(apartment_data.results);
-  const [favArray, setFavArray] = useState([]);
-  const [inputData, setInputData] = useState("");
+  // Only host-created listings are persisted. The bundled catalogue already
+  // ships with the app, so storing a second copy of it would just burn quota.
+  const [hostListings, setHostListings] = useLocalStorage(
+    "homebrew:host-listings",
+    [],
+  );
+  const [query, setQuery] = useState("");
   const navigate = useNavigate();
+
+  const allApartments = useMemo(
+    () => [...hostListings, ...apartment_data.results],
+    [hostListings],
+  );
+
+  // Search results are derived from the query rather than held in their own
+  // piece of state. Two copies meant the input and the grid could drift apart —
+  // results only ever updated on Enter, never as you typed.
+  const debouncedQuery = useDebouncedValue(query, 250);
+  const results = useMemo(
+    () => filterListings(allApartments, debouncedQuery),
+    [allApartments, debouncedQuery],
+  );
+
+  const { favorites, isFavorite, toggleFavorite } = useFavorites(allApartments);
+
+  const addListing = useCallback(
+    (listing) => setHostListings((current) => [listing, ...current]),
+    [setHostListings],
+  );
+
   const handleSubmit = (e) => {
     if (e.key === "Enter") {
-      setInputData(e.target.value);
+      setQuery(e.target.value);
       navigate("/properties");
     }
   };
@@ -43,36 +74,31 @@ function App() {
           path="/properties"
           element={
             <ApartmentListing
-              allApartments={allApartments}
-              dataArray={dataArray}
-              setDataArray={setDataArray}
-              favArray={favArray}
-              setFavArray={setFavArray}
-              inputData={inputData}
-              setInputData={setInputData}
+              dataArray={results}
+              query={query}
+              setQuery={setQuery}
+              isFavorite={isFavorite}
+              toggleFavorite={toggleFavorite}
             />
           }
         ></Route>
         <Route
           path="/favorites"
           element={
-            <ApartmentFavorites favArray={favArray} setFavArray={setFavArray} />
+            <ApartmentFavorites
+              favorites={favorites}
+              isFavorite={isFavorite}
+              toggleFavorite={toggleFavorite}
+            />
           }
         ></Route>
         <Route
           path="/details/:apartmentId"
-          element={<ApartmentDetails dataArray={dataArray} />}
+          element={<ApartmentDetails allApartments={allApartments} />}
         ></Route>
         <Route
           path="/add_apartment"
-          element={
-            <AddApartmentPage
-              dataArray={dataArray}
-              setDataArray={setDataArray}
-              allApartments={allApartments}
-              setAllApartments={setAllApartments}
-            />
-          }
+          element={<AddApartmentPage addListing={addListing} />}
         ></Route>
         <Route path="/about" element={<About />}></Route>
       </Routes>

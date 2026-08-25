@@ -1,41 +1,32 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import starIcon from "../assets/images/star.png";
 import heartFilledIcon from "../assets/images/filledheart_icon.png";
 import heartIcon from "../assets/images/heart_icon.png";
+import { listingArea, listingRating } from "../lib/listings";
 
-const ApartmentCard = ({ apartment, favArray, setFavArray, dataArray }) => {
-  const [favState, setFavState] = useState(false);
-  const setFavStateFunction = (id) => {
-    if (!favState) {
-      const newFavArray = [
-        ...favArray,
-        ...dataArray.filter((element) => element.id === id),
-      ];
-      setFavArray(newFavArray);
-    } else {
-      const newFavArray = [...favArray.filter((element) => element.id !== id)];
-      setFavArray(newFavArray);
-    }
-    setFavState(!favState);
-  };
+const ApartmentCard = ({ apartment, isFavorite, toggleFavorite }) => {
+  // Read straight from the shared favorites list. The card used to keep its own
+  // boolean, which went stale whenever the list changed somewhere else.
+  const favorited = isFavorite(apartment.id);
+  const rating = listingRating(apartment);
+
   return (
-    <div key={apartment.id} className="main-container">
+    <div className="main-container">
       <img
-        onClick={() => setFavStateFunction(apartment.id)}
+        onClick={() => toggleFavorite(apartment.id)}
         className="fav-icon"
-        src={favState ? heartFilledIcon : heartIcon}
-        alt="test"
+        src={favorited ? heartFilledIcon : heartIcon}
+        alt={favorited ? "Remove from favorites" : "Save to favorites"}
       />{" "}
-      <Link key={apartment.id} to={`/details/${apartment.id}`}>
+      <Link to={`/details/${apartment.id}`}>
         <img
           className="image-portfolio"
           src={apartment.picture_url.url}
-          alt="test"
+          alt={apartment.name}
         />
         <div className="lower-container">
           <div className="lower2-container">
-            <h5>{`${apartment.property_type} in ${apartment.neighbourhood ? apartment.neighbourhood : "La Latina"}`}</h5>
+            <h5>{`${apartment.property_type} in ${listingArea(apartment)}`}</h5>
             <p className="card-info">{`${apartment.city}, ${apartment.country}`}</p>
             <p className="card-info">
               Max capacity: {apartment.accommodates} people
@@ -46,11 +37,7 @@ const ApartmentCard = ({ apartment, favArray, setFavArray, dataArray }) => {
           </div>
           <div className="lower3-container">
             <img className="rate-icon" src={starIcon} alt="" />
-            <p className="rating-info">
-              {apartment.review_scores_rating
-                ? apartment.review_scores_rating / 10
-                : `N/A`}
-            </p>
+            <p className="rating-info">{rating ?? "N/A"}</p>
           </div>
         </div>
       </Link>
