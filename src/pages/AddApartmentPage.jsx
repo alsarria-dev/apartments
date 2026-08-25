@@ -1,3 +1,16 @@
+/**
+ * @file Route `/add_apartment` — the form for publishing a listing.
+ *
+ * The form is data-driven: {@link SECTIONS} describes the fields, and the JSX
+ * renders whatever is in it. To add or reorder a field, edit that array rather
+ * than the markup.
+ *
+ * A published listing goes into `localStorage` via `addListing` and appears at
+ * the top of the grid. There is no server, so it is visible only in this browser.
+ *
+ * Exports: {@link AddApartmentPage} (default).
+ */
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Page from "../components/Page";
@@ -6,6 +19,10 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import useScrollToTop from "../hooks/useScrollToTop";
 import styles from "./AddApartmentPage.module.css";
 
+/**
+ * Empty form values. Note there is no `id`: it is minted once at submit, not
+ * carried in form state, because regenerating it per keystroke was a bug.
+ */
 const initialState = {
   name: "",
   country: "",
@@ -31,6 +48,17 @@ const NUMERIC_FIELDS = [
   "review_scores_rating",
 ];
 
+/**
+ * The form, as data. Each section becomes a `<fieldset>`; each field becomes a
+ * labelled input. Anything beyond `name` and `label` is spread straight onto the
+ * `<input>`, so `type`, `min` and `max` here are ordinary HTML attributes and
+ * the browser does the validation.
+ *
+ * Fields are `required` unless marked otherwise. The description is a
+ * `<textarea>` and is rendered separately, below this list.
+ *
+ * @type {{title: string, hint: string, fields: object[]}[]}
+ */
 const SECTIONS = [
   {
     title: "The place",
@@ -64,6 +92,15 @@ const SECTIONS = [
   },
 ];
 
+/**
+ * The publish-a-listing page.
+ *
+ * @param {object} props
+ * @param {(listing: object) => void} props.addListing Persists the new listing.
+ * @returns {JSX.Element}
+ *
+ * @sideeffect On submit: persists the listing and navigates to `/properties`.
+ */
 const AddApartmentPage = ({ addListing }) => {
   const [dataForm, setDataForm] = useState(initialState);
   const navigate = useNavigate();

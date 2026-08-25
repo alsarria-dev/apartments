@@ -5,6 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/homebrew-favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HomeBrew Apartments</title>
+    <!--
+      This must stay inline and stay in <head>. It runs synchronously before the
+      browser paints anything, which is the entire point: React cannot set the
+      theme early enough, so a dark-mode visitor would see a flash of the light
+      palette while the JS bundle loads and hydrates.
+
+      The key and values here duplicate src/hooks/useTheme.js by necessity — this
+      code runs before any module exists. Change one, change the other.
+    -->
     <script>
       // Stamp the saved theme before first paint, so a dark-mode visitor never
       // sees a flash of the light palette. Mirrors the key useTheme writes.

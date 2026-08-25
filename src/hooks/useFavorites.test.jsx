@@ -1,3 +1,10 @@
+/**
+ * @file Tests for saved-listing state.
+ *
+ * The duplicate-entry case is the important one: it is the regression test for
+ * the bug that produced duplicate React keys on the saved page.
+ */
+
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import useFavorites from "./useFavorites";

@@ -1,3 +1,13 @@
+/**
+ * @file One listing as it appears in a grid.
+ *
+ * Used by both the browsing page and the saved page, via `ListingGrid`. The most
+ * performance-sensitive component in the app: 100 of these render at once, so it
+ * is memoized and its props are kept referentially stable.
+ *
+ * Exports: {@link ApartmentCard} (default, wrapped in `memo`).
+ */
+
 import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import { HeartIcon, StarIcon } from "./icons";
@@ -17,7 +27,30 @@ const CARD_WIDTHS = [280, 420, 560];
 // `favorited` arrives as a boolean rather than as a predicate the card calls:
 // the predicate changes identity on every toggle, which would re-render all
 // 100 cards. A boolean changes for exactly the one card that was toggled.
+
+/**
+ * A listing card: photo, title, location, capacity, price and a save button.
+ *
+ * PERFORMANCE CONTRACT — this component is wrapped in `memo`, which only pays
+ * off while its props stay referentially stable between renders. `favorited` is
+ * therefore a **boolean**, not the `isFavorite` predicate: the predicate's
+ * identity changes on every toggle, which would re-render all 100 cards.
+ * `onToggleFavorite` takes the id so one shared, stable callback serves every
+ * card. Keep any new prop equally stable.
+ *
+ * The save button is a sibling of the `<Link>`, not a child of it, so that
+ * activating it does not also navigate to the listing.
+ *
+ * @param {object} props
+ * @param {object} props.apartment The listing to display.
+ * @param {boolean} props.favorited Whether this listing is currently saved.
+ * @param {(id: string) => void} props.onToggleFavorite Called with the listing's
+ *   id when the save button is activated.
+ * @returns {JSX.Element}
+ */
 const ApartmentCard = ({ apartment, favorited, onToggleFavorite }) => {
+  // Drives a fade-in. The placeholder underneath already holds the image's exact
+  // box, so this is purely cosmetic — nothing shifts when the photo arrives.
   const [imageLoaded, setImageLoaded] = useState(false);
   const rating = listingRating(apartment);
 

@@ -1,3 +1,10 @@
+/**
+ * @file Tests for persisted state, including both storage failure paths.
+ *
+ * The failure cases matter more than the happy path: localStorage can throw on
+ * access as well as on write, and an unhandled throw there blanks the page.
+ */
+
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import useLocalStorage from "./useLocalStorage";

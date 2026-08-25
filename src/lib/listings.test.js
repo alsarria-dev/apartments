@@ -1,3 +1,10 @@
+/**
+ * @file Tests for the pure listing helpers.
+ *
+ * These cover defects that actually occurred rather than framework behaviour —
+ * each case names the bug it guards. Keep that framing when adding to them.
+ */
+
 import { describe, expect, it } from "vitest";
 import {
   checkInScore,

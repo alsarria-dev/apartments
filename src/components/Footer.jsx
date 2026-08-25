@@ -8,6 +8,12 @@ import xLogo from "../assets/images/x.svg";
 // Adding Styles
 import styles from "./Footer.module.css";
 
+/**
+ * Social destinations. Placeholder profile links — they point at each network's
+ * home page, not at a HomeBrew account.
+ *
+ * @type {{href: string, logo: string, name: string}[]}
+ */
 const socials = [
   { href: "https://www.instagram.com/", logo: instagramLogo, name: "Instagram" },
   { href: "https://www.facebook.com/", logo: facebookLogo, name: "Facebook" },
@@ -16,6 +22,15 @@ const socials = [
   { href: "https://twitter.com/", logo: xLogo, name: "X" },
 ];
 
+/**
+ * The site footer: copyright, social links and secondary links.
+ * Rendered once by `App.jsx`, outside the routes.
+ *
+ * The `Careers` and `Contact` links point at in-page anchors that do not exist;
+ * they are placeholders for pages the app does not have.
+ *
+ * @returns {JSX.Element}
+ */
 function Footer() {
   return (
     <footer className={styles.footer}>

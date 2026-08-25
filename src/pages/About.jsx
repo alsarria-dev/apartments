@@ -1,3 +1,13 @@
+/**
+ * @file Route `/about` — a static page about the project. No props, no state.
+ *
+ * TODO(doc): the prose here was written to replace placeholder Lorem ipsum and
+ * describes HomeBrew as a practice project. That characterisation was inferred,
+ * not supplied by the project owner — confirm or replace it.
+ *
+ * Exports: {@link About} (default).
+ */
+
 import Page from "../components/Page";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 import profPic from "../assets/images/pixel_profile_pic.png";

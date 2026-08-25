@@ -1,3 +1,12 @@
+/**
+ * @file Route `/favorites` — the listings the visitor has saved.
+ *
+ * Reuses the same `ListingGrid` as the browsing page, differing only in the
+ * empty state it supplies.
+ *
+ * Exports: {@link ApartmentFavorites} (default).
+ */
+
 import EmptyState from "../components/EmptyState";
 import ListingGrid from "../components/ListingGrid";
 import Page from "../components/Page";
@@ -6,6 +15,20 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 import useScrollToTop from "../hooks/useScrollToTop";
 import styles from "./ApartmentFavorites.module.css";
 
+/**
+ * The saved-listings page.
+ *
+ * Note the `!loading` guard on the count: saved listings are resolved from the
+ * catalogue, so while it is still loading `favorites` is legitimately empty.
+ * Showing "0 stays" then would be wrong rather than merely premature.
+ *
+ * @param {object} props
+ * @param {object[]} props.favorites Saved listings, in the order they were saved.
+ * @param {(id: string) => boolean} props.isFavorite Saved-state lookup.
+ * @param {(id: string) => void} props.toggleFavorite Saves or unsaves a listing.
+ * @param {boolean} props.loading Catalogue still loading.
+ * @returns {JSX.Element}
+ */
 const ApartmentFavorites = ({
   favorites,
   isFavorite,

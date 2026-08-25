@@ -1,3 +1,13 @@
+/**
+ * @file Route `/` — the landing page.
+ *
+ * A full-bleed hero with a search field and shortcuts into the cities the
+ * catalogue actually contains. The only page that does not use `<Page>`, because
+ * its artwork runs edge to edge.
+ *
+ * Exports: {@link HomePage} (default).
+ */
+
 import { useMemo, useState } from "react";
 import { SearchIcon } from "../components/icons";
 import useDocumentTitle from "../hooks/useDocumentTitle";
@@ -6,6 +16,21 @@ import heroWide from "../assets/images/hero-1536.jpg";
 import heroNarrow from "../assets/images/hero-768.jpg";
 import styles from "./HomePage.module.css";
 
+/**
+ * The landing page.
+ *
+ * The search field here keeps its own `value` rather than driving the shared
+ * query, because typing on this page should not filter a grid that isn't
+ * visible. The query is only handed over on submit, via `onSearch`, which also
+ * navigates to the listings page.
+ *
+ * @param {object} props
+ * @param {object[]} props.allApartments Full catalogue, used to derive the city
+ *   shortcuts and their counts.
+ * @param {(value: string) => void} props.onSearch Sets the shared query and
+ *   navigates to `/properties`.
+ * @returns {JSX.Element}
+ */
 function HomePage({ allApartments, onSearch }) {
   const [value, setValue] = useState("");
   useScrollToTop();
@@ -13,6 +38,10 @@ function HomePage({ allApartments, onSearch }) {
 
   // The three cities are the whole catalogue, so offering them directly is
   // faster than asking someone to guess what's in it.
+  //
+  // Derived from the data rather than hardcoded: a host can publish a listing in
+  // a city the bundled catalogue has never heard of, and the shortcuts should
+  // reflect that. Capped at the three largest so the row does not grow unbounded.
   const cities = useMemo(() => {
     const counts = new Map();
     for (const listing of allApartments) {

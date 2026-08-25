@@ -1,3 +1,9 @@
+/**
+ * @file The search field on the listings page.
+ *
+ * Exports: {@link SearchBar} (default).
+ */
+
 import { CloseIcon, SearchIcon } from "./icons";
 import styles from "./SearchBar.module.css";
 
@@ -8,6 +14,17 @@ import styles from "./SearchBar.module.css";
 // The field is also permanently visible now. It used to be a 50px circle that
 // expanded to 500px on focus, which hid the page's primary control until you
 // found it.
+/**
+ * The search field on the listings page. Fully controlled — it holds no state.
+ *
+ * Bound to the raw query, not the debounced one, so typing feels instant; the
+ * debounce happens between the query and the filtering, in `App.jsx`.
+ *
+ * @param {object} props
+ * @param {string} props.query Current search text.
+ * @param {(value: string) => void} props.setQuery Updates the search text.
+ * @returns {JSX.Element}
+ */
 const SearchBar = ({ query, setQuery }) => (
   <div className={styles.field}>
     <SearchIcon className={styles.icon} />

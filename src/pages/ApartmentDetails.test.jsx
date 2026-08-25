@@ -1,3 +1,10 @@
+/**
+ * @file Tests for the detail page's three states: loading, not-found, found.
+ *
+ * Guards the crash that blanked the whole app when a listing was looked up in
+ * the filtered results instead of the catalogue.
+ */
+
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";

@@ -1,11 +1,37 @@
+/**
+ * @file The full listing detail view.
+ *
+ * Rendered by the `/details/:apartmentId` page once it has resolved a listing.
+ * Two columns on wide screens — content and a sticky price panel — collapsing to
+ * one on narrow ones.
+ *
+ * Exports: {@link Details} (default).
+ */
+
 import { useState } from "react";
 import { HeartIcon, StarIcon } from "./icons";
 import { Button } from "./Button";
 import { checkInScore, listingRating } from "../lib/listings";
 import styles from "./Details.module.css";
 
+/** Characters of description shown before the "Show more" cut. */
 const DESCRIPTION_LIMIT = 320;
 
+/**
+ * The full listing view: photo, facts, description, host and a price panel.
+ *
+ * Several fields are optional in the data, so most sections are conditional:
+ * 11 listings have no rating, 13 have no `space` text (those fall back to
+ * `description`, substituted at build time), and `cleaning_fee` can be zero.
+ * Anything added here should assume its field may be missing.
+ *
+ * @param {object} props
+ * @param {object} props.apartmentDetail The listing. Guaranteed non-null — the
+ *   page resolves loading and not-found before rendering this.
+ * @param {(id: string) => boolean} props.isFavorite Saved-state lookup.
+ * @param {(id: string) => void} props.toggleFavorite Saves or unsaves.
+ * @returns {JSX.Element}
+ */
 function Details({ apartmentDetail, isFavorite, toggleFavorite }) {
   const [expanded, setExpanded] = useState(false);
 

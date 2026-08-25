@@ -1,3 +1,21 @@
+/**
+ * @file The root component, and the home of **all** shared application state.
+ *
+ * This is the file to read first. There is no Context, no Redux and no store:
+ * every piece of state the app shares is declared here and passed down as props,
+ * at most two levels deep. If you want to know what the application knows, it is
+ * all on this page.
+ *
+ * Responsibilities:
+ *  - own the catalogue, the search query, saved listings and host-created listings
+ *  - declare the routes and hand each page the slice of state it needs
+ *  - render the persistent chrome (skip link, navbar, footer)
+ *
+ * See ARCHITECTURE.md §3 for a diagram of how these values derive from each other.
+ *
+ * Exports: {@link App} (default).
+ */
+
 // Importing Modules
 import { useCallback, useMemo, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -24,6 +42,11 @@ import { filterListings } from "./lib/listings";
 // Importing Styles
 import styles from "./App.module.css";
 
+/**
+ * Root component: application state, routing and page chrome.
+ *
+ * @returns {JSX.Element}
+ */
 // Main App function
 function App() {
   // The catalogue arrives in its own chunk, after first paint.
@@ -38,6 +61,8 @@ function App() {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
+  // Host listings come first so a newly published place appears at the top of
+  // the grid, where its author expects to find it.
   const allApartments = useMemo(
     () => [...hostListings, ...listings],
     [hostListings, listings],
@@ -46,6 +71,9 @@ function App() {
   // Search results are derived from the query rather than held in their own
   // piece of state. Two copies meant the input and the grid could drift apart —
   // results only ever updated on Enter, never as you typed.
+  //
+  // `query` drives the input so typing stays instant; `debouncedQuery` drives
+  // the filtering so it runs once the typing settles.
   const debouncedQuery = useDebouncedValue(query, 250);
   const results = useMemo(
     () => filterListings(allApartments, debouncedQuery),
@@ -54,11 +82,20 @@ function App() {
 
   const { favorites, isFavorite, toggleFavorite } = useFavorites(allApartments);
 
+  /**
+   * Publishes a host-created listing, which persists to `localStorage`.
+   * @param {object} listing A complete listing record; the caller mints the id.
+   */
   const addListing = useCallback(
     (listing) => setHostListings((current) => [listing, ...current]),
     [setHostListings],
   );
 
+  /**
+   * Runs a search from outside the listings page — the landing-page hero — by
+   * setting the query and navigating to the grid that displays it.
+   * @param {string} value The search term.
+   */
   const startSearch = useCallback(
     (value) => {
       setQuery(value);
@@ -85,6 +122,12 @@ function App() {
               />
             }
           />
+          {/*
+            Note which pages receive `allApartments` and which receive `results`.
+            `results` is the filtered view and is only ever for display; anything
+            that looks a listing UP by id must use `allApartments`, or a listing
+            excluded by the current search will resolve to undefined.
+          */}
           <Route
             path="/properties"
             element={
