@@ -1,9 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Details from "../components/Details";
+import EmptyState from "../components/EmptyState";
+import Page from "../components/Page";
+import { ButtonLink } from "../components/Button";
 import useScrollToTop from "../hooks/useScrollToTop";
-import "./ApartmentListing.css";
 
-const ApartmentDetails = ({ allApartments }) => {
+const ApartmentDetails = ({ allApartments, isFavorite, toggleFavorite }) => {
   const { apartmentId } = useParams();
   useScrollToTop();
 
@@ -17,19 +19,24 @@ const ApartmentDetails = ({ allApartments }) => {
 
   if (!apartmentDetail) {
     return (
-      <div className="upper-container">
-        <div className="nofavorites">
-          That listing isn&apos;t available.{" "}
-          <Link to="/properties">Browse all listings</Link>
-        </div>
-      </div>
+      <Page>
+        <EmptyState
+          title="That stay isn't available"
+          description="The link may be out of date, or the listing may have been removed."
+          action={<ButtonLink to="/properties">Browse stays</ButtonLink>}
+        />
+      </Page>
     );
   }
 
   return (
-    <div className="upper-container">
-      <Details apartmentDetail={apartmentDetail} />
-    </div>
+    <Page>
+      <Details
+        apartmentDetail={apartmentDetail}
+        isFavorite={isFavorite}
+        toggleFavorite={toggleFavorite}
+      />
+    </Page>
   );
 };
 

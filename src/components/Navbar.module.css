@@ -1,0 +1,96 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--page-max);
+  min-height: var(--header-height);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.link {
+  position: relative;
+  display: inline-block;
+  padding-block: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  transition: color var(--duration) var(--ease);
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+/* A hairline under the current section rather than a filled pill — the header
+   is the quietest surface in the design and should stay that way. */
+.link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--duration) var(--ease);
+}
+
+.linkActive {
+  color: var(--ink);
+}
+
+.linkActive::after {
+  transform: scaleX(1);
+}
+
+@media (max-width: 640px) {
+  .inner {
+    flex-wrap: wrap;
+    padding-block: var(--space-3);
+    padding-inline: var(--space-4);
+    row-gap: var(--space-2);
+  }
+
+  /* The links become a scrollable strip rather than hiding behind a menu
+     button: five destinations don't earn a disclosure. */
+  .nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .links {
+    gap: var(--space-4);
+  }
+}

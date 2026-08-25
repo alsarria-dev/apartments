@@ -5,6 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/homebrew-favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HomeBrew Apartments</title>
+    <script>
+      // Stamp the saved theme before first paint, so a dark-mode visitor never
+      // sees a flash of the light palette. Mirrors the key useTheme writes.
+      try {
+        var saved = JSON.parse(localStorage.getItem("homebrew:theme"));
+        if (saved === "dark" || saved === "light") {
+          document.documentElement.setAttribute("data-theme", saved);
+        }
+      } catch (e) {
+        // Storage unavailable — fall through to prefers-color-scheme.
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

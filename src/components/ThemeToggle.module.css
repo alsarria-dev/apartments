@@ -1,0 +1,28 @@
+.toggle {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background-color: var(--paper);
+  transition:
+    background-color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease);
+}
+
+.toggle:hover {
+  background-color: var(--paper-sunk);
+  border-color: var(--ink-soft);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  filter: invert(var(--icon-invert));
+  transition: transform var(--duration) var(--ease);
+}
+
+.toggle:hover .icon {
+  transform: rotate(-12deg);
+}

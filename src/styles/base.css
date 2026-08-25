@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Base layer — the only stylesheet in the app allowed to style bare elements.
+
+   Component styles live in *.module.css and are scoped by the bundler, so the
+   collisions that used to decide the app's look by import order (two files
+   setting `body`, one setting `* { font-family }`, another restyling every
+   `ul` and `a`) can't happen again.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Keeps anchored navigation and the sticky header from colliding. */
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--text-s);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Was `width: 100vw` on body, which counts the scrollbar and so guaranteed a
+   horizontal scrollbar on every desktop page. */
+body {
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* A visible focus ring everywhere, in the accent. The app previously had
+   almost none, and two rules that removed the default outright. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-s);
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

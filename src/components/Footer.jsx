@@ -6,58 +6,55 @@ import youtubeLogo from "../assets/images/youtube.svg";
 import xLogo from "../assets/images/x.svg";
 
 // Adding Styles
-import "./Footer.css";
+import styles from "./Footer.module.css";
 
-const date = new Date();
+const socials = [
+  { href: "https://www.instagram.com/", logo: instagramLogo, name: "Instagram" },
+  { href: "https://www.facebook.com/", logo: facebookLogo, name: "Facebook" },
+  { href: "https://www.linkedin.com/", logo: linkedinLogo, name: "LinkedIn" },
+  { href: "https://www.youtube.com/", logo: youtubeLogo, name: "YouTube" },
+  { href: "https://twitter.com/", logo: xLogo, name: "X" },
+];
 
 function Footer() {
   return (
-    <div className="footer-container">
-      <div className="footerLeft-container">
-        <p className="footer-paragraph">© {date.getFullYear()}</p>
+    <footer className={styles.footer}>
+      <div className={styles.inner}>
+        <p className={styles.copyright}>
+          <span className={styles.year}>© {new Date().getFullYear()}</span>{" "}
+          HomeBrew
+        </p>
+
+        <ul className={styles.socials}>
+          {socials.map(({ href, logo, name }) => (
+            <li key={name}>
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.socialLink}
+                aria-label={`HomeBrew on ${name}`}
+              >
+                <img className={styles.socialLogo} src={logo} alt="" />
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <ul className={styles.meta}>
+          <li>
+            <a className={styles.metaLink} href="#careers">
+              Careers
+            </a>
+          </li>
+          <li>
+            <a className={styles.metaLink} href="#contact">
+              Contact
+            </a>
+          </li>
+        </ul>
       </div>
-        <div className="footerIconLogos-container">
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-            <img
-              className="footer-logo instagram"
-              src={instagramLogo}
-              alt="instagram logo"
-            />
-          </a>
-          <p className="logo-separator">/</p>
-          <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
-            <img
-              className="footer-logo facebook"
-              src={facebookLogo}
-              alt="facebook logo"
-            />
-          </a>
-          <p className="logo-separator">/</p>
-          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">
-            <img
-              className="footer-logo linkedin"
-              src={linkedinLogo}
-              alt="linkedin logo"
-            />
-          </a>
-          <p className="logo-separator">/</p>
-          <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
-            <img
-              className="footer-logo youtube"
-              src={youtubeLogo}
-              alt="youtube logo"
-            />
-          </a>
-          <p className="logo-separator">/</p>
-          <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
-            <img className="footer-logo xlogo" src={xLogo} alt="x logo" />
-          </a>
-        </div>
-      <div className="footerRight-container">
-        <p className="footer-paragraph left">Careers</p>
-        <p className="footer-paragraph left">Contact Us</p>
-      </div>
-    </div>
+    </footer>
   );
 }
 

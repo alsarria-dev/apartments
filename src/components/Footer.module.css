@@ -1,0 +1,88 @@
+.footer {
+  margin-top: auto;
+  background-color: var(--paper);
+  border-top: 1px solid var(--line);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding: var(--space-5);
+}
+
+.copyright {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* Numerals in the display face, as everywhere else in the product. */
+.year {
+  font-family: var(--font-display);
+  font-size: var(--text-s);
+  letter-spacing: 0;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.socialLink {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  transition: background-color var(--duration) var(--ease);
+}
+
+.socialLink:hover {
+  background-color: var(--paper-sunk);
+}
+
+/* grayscale() first because some of these SVGs carry a brand fill (LinkedIn is
+   blue), so without it one logo in the row would sit at full saturation.
+   Replaces five per-network hover filters that only fired on hover anyway. */
+.socialLogo {
+  width: 16px;
+  height: 16px;
+  opacity: 0.55;
+  filter: grayscale(1) invert(var(--icon-invert));
+  transition: opacity var(--duration) var(--ease);
+}
+
+.socialLink:hover .socialLogo {
+  opacity: 1;
+}
+
+.meta {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.metaLink {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color var(--duration) var(--ease);
+}
+
+.metaLink:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .inner {
+    flex-direction: column;
+    gap: var(--space-4);
+    text-align: center;
+  }
+}

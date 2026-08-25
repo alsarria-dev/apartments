@@ -1,95 +1,145 @@
 import { useState } from "react";
-import star from "../assets/images/estrella.png";
-import yellowStar from "../assets/images/estrella-de-navidad.png";
-import diamond from "../assets/images/gemas.png";
-import { checkInScore } from "../lib/listings";
-import "./Details.css";
+import { HeartIcon, StarIcon } from "./icons";
+import { Button } from "./Button";
+import { checkInScore, listingRating } from "../lib/listings";
+import styles from "./Details.module.css";
 
-function Details({ apartmentDetail }) {
-  const [showDescription, setShowDescription] = useState(false);
+const DESCRIPTION_LIMIT = 320;
 
-  const toggleDescriptionVisibility = () => {
-    setShowDescription(!showDescription);
-  };
+function Details({ apartmentDetail, isFavorite, toggleFavorite }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const rating = listingRating(apartmentDetail);
+  const favorited = isFavorite(apartmentDetail.id);
+  const description = apartmentDetail.space || apartmentDetail.description || "";
+  const isLong = description.length > DESCRIPTION_LIMIT;
+
+  const facts = [
+    { label: "Guests", value: apartmentDetail.accommodates },
+    { label: "Bedrooms", value: apartmentDetail.bedrooms },
+    { label: "Beds", value: apartmentDetail.beds },
+    { label: "Baths", value: apartmentDetail.bathrooms },
+  ].filter((fact) => fact.value !== undefined && fact.value !== null);
 
   return (
-    <>
-      <div className="everything">
-        <div className="fullPage">
-          <div className="column1">
-            <h1 className="title">{apartmentDetail.name}</h1>
-            <img
-              className="detailsImg"
-              src={apartmentDetail.picture_url.url}
-              alt=""
-            />
-            <h3 className="locationDetails">
-              {apartmentDetail.property_type} in {apartmentDetail.city},{" "}
-              {apartmentDetail.country}
-            </h3>
-            <ul className="generalDetails">
-              <li>{apartmentDetail.accommodates} guests</li>
-              <li>{apartmentDetail.bedrooms} bedrooms</li>
-              <li>{apartmentDetail.bathrooms} bathrooms</li>
-            </ul>
-            <h4>Price: {apartmentDetail.price} €/night</h4>
-          </div>
-          <div className="column2">
-            <div className="ratingBox">
-              <img className="starImg" src={star} alt="" />
-              <p>
-                One of the most loved homes on Airbnb <br /> based on ratings,
-                reviews, and reliability
-              </p>
-              <p className="rating">
-                {apartmentDetail.review_scores_rating}/100{" "}
-                <img className="yellowStar" src={yellowStar} alt="" />
-              </p>
-            </div>
+    <article className={styles.detail}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>{apartmentDetail.name}</h1>
+        <p className={styles.location}>
+          {apartmentDetail.property_type} in {apartmentDetail.city},{" "}
+          {apartmentDetail.country}
+          {rating !== null && (
+            <span className={styles.rating}>
+              <StarIcon />
+              <span className={styles.ratingValue}>{rating}</span>
+            </span>
+          )}
+        </p>
+      </header>
 
-            <div className="host">
-              <p>
-                Hosted by: {apartmentDetail.host_name} <br />
-                {apartmentDetail.host_name} is a Superhost
-              </p>
-              <p> Superhosts are experienced, highly rated Hosts. </p>
-            </div>
-            <div className="rareFind">
-              <img src={diamond} alt="" className="diamond" />
-              <p>
-                {" "}
-                This is a rare find <br /> {apartmentDetail.host_name}&apos;s
-                place is usually fully booked.
-              </p>
-            </div>
-            <p className="checkIn">
-              Great check-in experience {checkInScore(apartmentDetail)}% of
-              recent guests gave the check-in process a 5-star rating.
-            </p>
-          </div>
-        </div>
-        <div className="buttons">
-          <button
-            onClick={toggleDescriptionVisibility}
-            className="toggleDescription"
-          >
-            {showDescription ? "Hide Description" : "Show Description"}
-          </button>
+      <div className={styles.layout}>
+        <div className={styles.main}>
+          <img
+            className={styles.photo}
+            src={apartmentDetail.picture_url.url}
+            alt={apartmentDetail.name}
+            width={720}
+            height={540}
+            decoding="async"
+          />
 
-          {showDescription && (
-            <p className="description">
-              {" "}
-              <br />
-              {apartmentDetail.space}
-            </p>
+          <dl className={styles.facts}>
+            {facts.map(({ label, value }) => (
+              <div key={label} className={styles.fact}>
+                <dt className={styles.factLabel}>{label}</dt>
+                <dd className={styles.factValue}>{value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {description && (
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>About this place</h2>
+              <p className={styles.description}>
+                {isLong && !expanded
+                  ? `${description.slice(0, DESCRIPTION_LIMIT).trimEnd()}…`
+                  : description}
+              </p>
+              {isLong && (
+                <button
+                  type="button"
+                  className={styles.more}
+                  onClick={() => setExpanded((open) => !open)}
+                  aria-expanded={expanded}
+                >
+                  {expanded ? "Show less" : "Show more"}
+                </button>
+              )}
+            </section>
           )}
 
-          {/* <Link to={`/properties`} >
-                        <button className="back">Back</button>
-                    </Link> */}
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Your host</h2>
+            <p className={styles.host}>{apartmentDetail.host_name}</p>
+            <p className={styles.hostMeta}>
+              {apartmentDetail.host_since &&
+                `Hosting since ${apartmentDetail.host_since.slice(0, 4)}`}
+              {apartmentDetail.host_response_time &&
+                ` · Usually replies ${apartmentDetail.host_response_time}`}
+            </p>
+            <p className={styles.hostMeta}>
+              {checkInScore(apartmentDetail)}% of recent guests rated check-in
+              five stars.
+            </p>
+          </section>
         </div>
+
+        {/* Follows you down the page, the way a booking panel would. */}
+        <aside className={styles.aside}>
+          <div className={styles.card}>
+            <p className={styles.price}>
+              <span className={styles.priceValue}>
+                €{apartmentDetail.price}
+              </span>
+              <span className={styles.priceUnit}>night</span>
+            </p>
+
+            <dl className={styles.breakdown}>
+              <div className={styles.breakdownRow}>
+                <dt>Per night</dt>
+                <dd className={styles.amount}>€{apartmentDetail.price}</dd>
+              </div>
+              {apartmentDetail.cleaning_fee > 0 && (
+                <div className={styles.breakdownRow}>
+                  <dt>Cleaning fee</dt>
+                  <dd className={styles.amount}>
+                    €{apartmentDetail.cleaning_fee}
+                  </dd>
+                </div>
+              )}
+              {apartmentDetail.cancellation_policy && (
+                <div className={styles.breakdownRow}>
+                  <dt>Cancellation</dt>
+                  <dd className={styles.policy}>
+                    {apartmentDetail.cancellation_policy}
+                  </dd>
+                </div>
+              )}
+            </dl>
+
+            <Button
+              variant={favorited ? "secondary" : "primary"}
+              className={styles.save}
+              onClick={() => toggleFavorite(apartmentDetail.id)}
+              aria-pressed={favorited}
+            >
+              <HeartIcon filled={favorited} size={16} />
+              {favorited ? "Saved" : "Save"}
+            </Button>
+          </div>
+        </aside>
       </div>
-    </>
+    </article>
   );
 }
 

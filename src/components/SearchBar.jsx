@@ -1,22 +1,36 @@
-import searchBar from "../assets/images/search.png";
-import "./SearchBar.css";
+import { CloseIcon, SearchIcon } from "./icons";
+import styles from "./SearchBar.module.css";
 
 // Purely controlled: the query lives in App, which derives the results from it.
 // Filtering used to be triggered only by Enter and by a mount effect, so what
 // you typed and what you saw could disagree.
+//
+// The field is also permanently visible now. It used to be a 50px circle that
+// expanded to 500px on focus, which hid the page's primary control until you
+// found it.
 const SearchBar = ({ query, setQuery }) => (
-  <div className="search-box">
-    <button className="btn-search" type="button">
-      <img className="search-image" src={searchBar} alt="" />
-    </button>
+  <div className={styles.field}>
+    <SearchIcon className={styles.icon} />
     <input
-      onChange={(e) => setQuery(e.target.value)}
+      id="listing-search"
       type="text"
-      className="input-search"
-      placeholder="Type to Search..."
+      className={styles.input}
+      placeholder="Search by city or country"
       value={query}
+      onChange={(e) => setQuery(e.target.value)}
       aria-label="Search listings by city or country"
+      autoComplete="off"
     />
+    {query && (
+      <button
+        type="button"
+        className={styles.clear}
+        onClick={() => setQuery("")}
+        aria-label="Clear search"
+      >
+        <CloseIcon size={14} />
+      </button>
+    )}
   </div>
 );
 

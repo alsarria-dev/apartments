@@ -1,0 +1,142 @@
+/* ==========================================================================
+   HomeBrew design tokens — "Ledger"
+   --------------------------------------------------------------------------
+   Every colour, size, space and font in the app resolves to something here.
+   Nothing below this file should contain a raw hex value or a magic pixel.
+
+   The palette extends the identity the app already had — the EB Garamond
+   wordmark in espresso brown — rather than replacing it. The warmth sits in
+   the ink and in one accent; the ground stays a near-white paper so the
+   listing photography carries the colour.
+   ========================================================================== */
+
+/* Declared once, here. These faces used to be redeclared in seven stylesheets,
+   none of them with font-display, so text stayed invisible while ~1MB of TTF
+   loaded. Phase 3 subsets these to WOFF2. */
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../assets/EBGaramond-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../assets/Montserrat-VariableFont_wght.ttf")
+    format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* --- Colour -------------------------------------------------------- */
+  --paper: #fbfaf7;
+  --paper-sunk: #f0ece4;
+  --paper-raised: #ffffff;
+  --ink: #241a10;
+  --ink-soft: #6b5a49;
+  --accent: #2f6b4f;
+  --accent-soft: #e6efe9;
+  --on-accent: #fbfaf7;
+  --line: #e0d9ce;
+
+  /* Saved state. The one place a second hue is allowed, because a heart that
+     reads as "on" needs to be unmistakable at a glance in a grid. */
+  --saved: #b5341f;
+
+  --shadow-card: 0 1px 2px rgb(36 26 16 / 6%), 0 8px 24px -12px rgb(36 26 16 / 18%);
+  --shadow-raised: 0 2px 6px rgb(36 26 16 / 10%), 0 16px 40px -16px rgb(36 26 16 / 28%);
+
+  /* --- Type ---------------------------------------------------------- */
+  /* EB Garamond is deliberately NOT the general headline face. It carries the
+     wordmark and every number in the product — prices, ratings, city counts.
+     Old-style figures in a price read as considered in a way a grotesk price
+     does not, and the font is already in the bundle. */
+  --font-display: "EB Garamond", Georgia, "Times New Roman", serif;
+  --font-ui: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* 1.25 modular scale, replacing the ten ad-hoc font sizes. */
+  --text-xs: 0.8rem;
+  --text-s: 1rem;
+  --text-m: 1.25rem;
+  --text-l: 1.563rem;
+  --text-xl: 1.953rem;
+  --text-2xl: 2.441rem;
+  --text-3xl: 3.052rem;
+
+  --leading-tight: 1.15;
+  --leading-normal: 1.55;
+  --tracking-label: 0.08em;
+
+  /* --- Space --------------------------------------------------------- */
+  /* 4px base, replacing the ad-hoc 10/20/30/40/100px margins. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* --- Shape and motion ---------------------------------------------- */
+  --radius-s: 4px;
+  --radius-m: 10px;
+  --radius-l: 18px;
+  --radius-full: 999px;
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --duration: 180ms;
+
+  --page-max: 1180px;
+  --header-height: 4rem;
+
+  /* The sun/moon PNGs are monochrome line art drawn in black, so they need
+     flipping on a dark ground. Icons that carry state or colour are inline SVG
+     instead, and take their fill from the tokens above. */
+  --icon-invert: 0;
+}
+
+/* The dark ground is the #08080c that index.css declared but never got to use,
+   because two component stylesheets overrode body app-wide.
+
+   Three states: an explicit choice stamps data-theme on <html>; with no choice
+   stamped, prefers-color-scheme decides. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #08080c;
+    --paper-sunk: #15120f;
+    --paper-raised: #1c1815;
+    --ink: #f2ede5;
+    --ink-soft: #a3968a;
+    --accent: #6aa886;
+    --accent-soft: #1b2a22;
+    --on-accent: #08080c;
+    --line: #2e2823;
+    --saved: #e0674e;
+    --icon-invert: 1;
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 70%);
+    --shadow-raised: 0 2px 6px rgb(0 0 0 / 50%),
+      0 16px 40px -16px rgb(0 0 0 / 80%);
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #08080c;
+  --paper-sunk: #15120f;
+  --paper-raised: #1c1815;
+  --ink: #f2ede5;
+  --ink-soft: #a3968a;
+  --accent: #6aa886;
+  --accent-soft: #1b2a22;
+  --on-accent: #08080c;
+  --line: #2e2823;
+  --saved: #e0674e;
+  --icon-invert: 1;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 70%);
+  --shadow-raised: 0 2px 6px rgb(0 0 0 / 50%), 0 16px 40px -16px rgb(0 0 0 / 80%);
+}

@@ -21,7 +21,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import { filterListings } from "./lib/listings";
 
 // Importing Styles
-import "./App.css";
+import styles from "./App.module.css";
 
 // Importing Data
 import apartment_data from "./data/project_data.json";
@@ -58,52 +58,70 @@ function App() {
     [setHostListings],
   );
 
-  const handleSubmit = (e) => {
-    if (e.key === "Enter") {
-      setQuery(e.target.value);
+  const startSearch = useCallback(
+    (value) => {
+      setQuery(value);
       navigate("/properties");
-    }
-  };
+    },
+    [navigate],
+  );
 
   return (
-    <>
+    <div className={styles.shell}>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage handleSubmit={handleSubmit} />} />
-        <Route
-          path="/properties"
-          element={
-            <ApartmentListing
-              dataArray={results}
-              query={query}
-              setQuery={setQuery}
-              isFavorite={isFavorite}
-              toggleFavorite={toggleFavorite}
-            />
-          }
-        ></Route>
-        <Route
-          path="/favorites"
-          element={
-            <ApartmentFavorites
-              favorites={favorites}
-              isFavorite={isFavorite}
-              toggleFavorite={toggleFavorite}
-            />
-          }
-        ></Route>
-        <Route
-          path="/details/:apartmentId"
-          element={<ApartmentDetails allApartments={allApartments} />}
-        ></Route>
-        <Route
-          path="/add_apartment"
-          element={<AddApartmentPage addListing={addListing} />}
-        ></Route>
-        <Route path="/about" element={<About />}></Route>
-      </Routes>
+      <main className={styles.main}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                allApartments={allApartments}
+                onSearch={startSearch}
+              />
+            }
+          />
+          <Route
+            path="/properties"
+            element={
+              <ApartmentListing
+                allApartments={allApartments}
+                results={results}
+                query={query}
+                setQuery={setQuery}
+                isFavorite={isFavorite}
+                toggleFavorite={toggleFavorite}
+              />
+            }
+          ></Route>
+          <Route
+            path="/favorites"
+            element={
+              <ApartmentFavorites
+                favorites={favorites}
+                isFavorite={isFavorite}
+                toggleFavorite={toggleFavorite}
+              />
+            }
+          ></Route>
+          <Route
+            path="/details/:apartmentId"
+            element={
+              <ApartmentDetails
+                allApartments={allApartments}
+                isFavorite={isFavorite}
+                toggleFavorite={toggleFavorite}
+              />
+            }
+          ></Route>
+          <Route
+            path="/add_apartment"
+            element={<AddApartmentPage addListing={addListing} />}
+          ></Route>
+          <Route path="/about" element={<About />}></Route>
+        </Routes>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

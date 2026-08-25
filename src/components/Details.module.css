@@ -1,0 +1,197 @@
+.header {
+  padding-bottom: var(--space-5);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  font-size: var(--text-s);
+  color: var(--ink-soft);
+}
+
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.ratingValue {
+  font-family: var(--font-display);
+  font-size: var(--text-m);
+  color: var(--ink);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: var(--space-7);
+  align-items: start;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background-color: var(--paper-sunk);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+  border-block: 1px solid var(--line);
+}
+
+.factLabel {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.factValue {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  color: var(--ink);
+}
+
+.sectionTitle {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.description {
+  font-size: var(--text-s);
+  color: var(--ink);
+  white-space: pre-line;
+}
+
+.more {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.host {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+}
+
+.hostMeta {
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+}
+
+.aside {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-5));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background-color: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-card);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.priceValue {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+}
+
+.priceUnit {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--line);
+  font-size: var(--text-xs);
+  color: var(--ink-soft);
+}
+
+.breakdownRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.amount {
+  font-family: var(--font-display);
+  font-size: var(--text-s);
+  color: var(--ink);
+}
+
+.policy {
+  color: var(--ink);
+  text-transform: capitalize;
+}
+
+.save {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  /* Below the breakpoint the panel stops following and simply sits after the
+     content, which is where a phone user expects it. */
+  .aside {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: var(--text-xl);
+  }
+}

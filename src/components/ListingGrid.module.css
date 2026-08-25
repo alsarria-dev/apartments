@@ -1,0 +1,22 @@
+/* auto-fill rather than fixed 300px columns, so the grid reflows on its own
+   from phone to desktop instead of needing a breakpoint per size. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-6) var(--space-5);
+  padding-block: var(--space-6);
+}
+
+.empty {
+  display: grid;
+  place-items: center;
+  min-height: 40vh;
+  padding-block: var(--space-8);
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}

@@ -1,0 +1,11 @@
+/* Holds the footer to the bottom on short pages without the 85vh/90vh
+   min-heights the old stylesheets scattered across every container. */
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+}

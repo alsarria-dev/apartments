@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AddApartmentPage.css";
+import Page from "../components/Page";
+import { Button } from "../components/Button";
+import useScrollToTop from "../hooks/useScrollToTop";
+import styles from "./AddApartmentPage.module.css";
 
 const initialState = {
   name: "",
@@ -27,9 +30,43 @@ const NUMERIC_FIELDS = [
   "review_scores_rating",
 ];
 
+const SECTIONS = [
+  {
+    title: "The place",
+    hint: "How it appears on the listing card.",
+    fields: [
+      { name: "name", label: "Listing title", placeholder: "Piso Cava Alta, Plaza Mayor" },
+      { name: "property_type", label: "Property type", placeholder: "Entire apartment" },
+      { name: "picture_url", label: "Photo URL", placeholder: "https://example.com/photo.jpg", type: "url" },
+    ],
+  },
+  {
+    title: "Where it is",
+    hint: "Search matches on city and country.",
+    fields: [
+      { name: "city", label: "City", placeholder: "Cadaqués" },
+      { name: "country", label: "Country", placeholder: "Spain" },
+      { name: "neighbourhood", label: "Neighbourhood", placeholder: "Carrer del Tro", required: false },
+    ],
+  },
+  {
+    title: "The details",
+    hint: "Shown on the listing page.",
+    fields: [
+      { name: "price", label: "Price per night (€)", placeholder: "200", type: "number", min: 0 },
+      { name: "accommodates", label: "Sleeps", placeholder: "8", type: "number", min: 1 },
+      { name: "bedrooms", label: "Bedrooms", placeholder: "4", type: "number", min: 0 },
+      { name: "bathrooms", label: "Bathrooms", placeholder: "2", type: "number", min: 0 },
+      { name: "review_scores_rating", label: "Score out of 100", placeholder: "92", type: "number", min: 0, max: 100 },
+      { name: "host_name", label: "Host name", placeholder: "Kiowa & Al" },
+    ],
+  },
+];
+
 const AddApartmentPage = ({ addListing }) => {
   const [dataForm, setDataForm] = useState(initialState);
   const navigate = useNavigate();
+  useScrollToTop();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -55,145 +92,66 @@ const AddApartmentPage = ({ addListing }) => {
     navigate("/properties");
   };
 
+  const valueFor = (name) =>
+    name === "picture_url" ? dataForm.picture_url.url : dataForm[name];
+
   return (
-    <div className="major-container">
-      <form onSubmit={handleSubmit} className="form-row">
-        <div className="form-column">
-          <label htmlFor="name">Apartment Description</label>
-          <input
-            onChange={handleInput}
-            type="text"
-            name="name"
-            placeholder="Piso Cava Alta / Plaza Mayor "
-            value={dataForm.name}
-            required
-          />
-          <label htmlFor="picture_url">Picture (add url)</label>
-          <input
-            onChange={handleInput}
-            type="text"
-            name="picture_url"
-            placeholder="https://www.example.com"
-            value={dataForm.picture_url.url}
-            required
-          />
-          <label htmlFor="property_type">Room Type</label>
-          <input
-            onChange={handleInput}
-            type="text"
-            name="property_type"
-            placeholder="Entire Apartment"
-            value={dataForm.property_type}
-            required
-          />
-          <label htmlFor="city">City</label>
-          <input
-            onChange={handleInput}
-            type="text"
-            name="city"
-            placeholder="Cadaqués"
-            value={dataForm.city}
-            required
-          />
-          <label htmlFor="country">Country</label>
-          <input
-            onChange={handleInput}
-            type="text"
-            name="country"
-            placeholder="Spain"
-            value={dataForm.country}
-            required
-          />
-          <label htmlFor="neighbourhood">Neighbourhood</label>
-          <input
-            onChange={handleInput}
-            type="text"
-            name="neighbourhood"
-            placeholder="Carrer del Tro"
-            value={dataForm.neighbourhood}
-            required
-          />
-        </div>
-        <div className="form-column">
-          <label htmlFor="price">Price per Night</label>
-          <input
-            onChange={handleInput}
-            type="number"
-            min="0"
-            name="price"
-            placeholder="200"
-            value={dataForm.price}
-            required
-          />
-          <label htmlFor="accommodates">Accomodates</label>
-          <input
-            onChange={handleInput}
-            type="number"
-            min="0"
-            name="accommodates"
-            placeholder="8"
-            value={dataForm.accommodates}
-            required
-          />
-          <label htmlFor="bedrooms">Bedrooms</label>
-          <input
-            onChange={handleInput}
-            type="number"
-            min="0"
-            name="bedrooms"
-            placeholder="4"
-            value={dataForm.bedrooms}
-            required
-          />
-          <label htmlFor="bathrooms">Bathrooms</label>
-          <input
-            onChange={handleInput}
-            type="number"
-            name="bathrooms"
-            placeholder="2"
-            value={dataForm.bathrooms}
-            required
-          />
-          <label htmlFor="review_scores_rating">Score</label>
-          <input
-            onChange={handleInput}
-            type="number"
-            min="0"
-            max="100"
-            name="review_scores_rating"
-            placeholder="between 0 and 100"
-            value={dataForm.review_scores_rating}
-            required
-          />
-          <label htmlFor="host_name">Host Name</label>
-          <input
-            onChange={handleInput}
-            type="text"
-            name="host_name"
-            placeholder="Kiowa & Al"
-            value={dataForm.host_name}
-            required
-          />
-        </div>
-        <div className="form-column1">
-          <label htmlFor="space">Space</label>
-          <textarea
-            onChange={handleInput}
-            type="text"
-            name="space"
-            value={dataForm.space}
-            placeholder="Perfecta ubicación para conocer toda la oferta cultural que ofrece Madrid (Museo del Prado..."
-            required
-          />
-          <button className="button-74" type="submit">
-            Create Listing
-          </button>
+    <Page>
+      <header className={styles.header}>
+        <h1 className={styles.title}>List your place</h1>
+        <p className={styles.lede}>
+          It appears in the grid straight away and stays there between visits.
+        </p>
+      </header>
+
+      <form onSubmit={handleSubmit} className={styles.form}>
+        {SECTIONS.map(({ title, hint, fields }) => (
+          <fieldset key={title} className={styles.section}>
+            <legend className={styles.legend}>{title}</legend>
+            <p className={styles.hint}>{hint}</p>
+
+            <div className={styles.fields}>
+              {fields.map(({ name, label, required = true, ...input }) => (
+                <label key={name} className={styles.field}>
+                  <span className={styles.label}>{label}</span>
+                  <input
+                    className={styles.input}
+                    name={name}
+                    type="text"
+                    value={valueFor(name)}
+                    onChange={handleInput}
+                    required={required}
+                    {...input}
+                  />
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        ))}
+
+        <fieldset className={styles.section}>
+          <legend className={styles.legend}>Description</legend>
+          <p className={styles.hint}>What makes the place worth the trip.</p>
+          <label className={styles.field}>
+            <span className={styles.label}>About this place</span>
+            <textarea
+              className={styles.textarea}
+              name="space"
+              rows={5}
+              value={dataForm.space}
+              onChange={handleInput}
+              placeholder="A whitewashed loft two streets back from the water, with a roof terrace that catches the evening light."
+              required
+            />
+          </label>
+        </fieldset>
+
+        <div className={styles.actions}>
+          <Button type="submit">Publish listing</Button>
         </div>
       </form>
-    </div>
+    </Page>
   );
 };
 
 export default AddApartmentPage;
-
-// name , picture_url.url, room_type , city, country , accommodates, bedrooms, bathrooms,review_scores_rating, host_name,space

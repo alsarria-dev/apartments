@@ -1,0 +1,124 @@
+.ledger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.summary {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.number {
+  font-family: var(--font-display);
+  font-size: var(--text-m);
+  letter-spacing: 0;
+  color: var(--ink);
+}
+
+.term {
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.term::before {
+  content: "\201C";
+}
+
+.term::after {
+  content: "\201D";
+}
+
+.cities {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.city {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  transition:
+    color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease),
+    background-color var(--duration) var(--ease);
+}
+
+.city:hover {
+  color: var(--ink);
+  border-color: var(--ink-soft);
+}
+
+.cityActive {
+  color: var(--accent);
+  background-color: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.cityActive:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* A city with no matches stays visible and stays clickable — seeing "Berlin 0"
+   is what explains an empty grid. */
+.cityEmpty {
+  opacity: 0.45;
+}
+
+.count {
+  font-family: var(--font-display);
+  font-size: var(--text-s);
+  letter-spacing: 0;
+  color: currentcolor;
+}
+
+.clear {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color var(--duration) var(--ease);
+}
+
+.clear:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  .ledger {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .cities {
+    overflow-x: auto;
+    padding-bottom: var(--space-1);
+    scrollbar-width: none;
+  }
+
+  .cities::-webkit-scrollbar {
+    display: none;
+  }
+}
